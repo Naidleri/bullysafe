@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1078444622339",
+    "project_id": "bullysafe-db644",
+    "storage_bucket": "bullysafe-db644.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078444622339:android:a5620722f02503a85c8436",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_bullysafe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB78T_3PxRHs9YuqN-Y6zG2d-W_aTdWFLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
