@@ -14,10 +14,21 @@ class UserModel {
     required this.phoneNumber,
     required this.gender,
   });
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      name: map['name'],
+      email: map['email'],
+      password: '',
+      dateOfBirth: map['dateOfBirth'],
+      phoneNumber: map['phoneNumber'],
+      gender: map['gender'],
+    );
+  }
 }
 
 class UserModelLogin {
-  final String uid; 
+  final String uid;
   final String email;
 
   UserModelLogin({required this.uid, required this.email});

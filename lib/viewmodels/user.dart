@@ -16,7 +16,7 @@ class RegisterViewModel extends ChangeNotifier {
 
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(userCredential.user.uid)
+          .doc(userCredential.user!.uid)
           .set({
         'name': user.name,
         'dateOfBirth': user.dateOfBirth,
@@ -35,24 +35,40 @@ class RegisterViewModel extends ChangeNotifier {
 
 class LoginViewModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   UserModelLogin? _user;
   UserModelLogin? get user => _user;
 
-  Future<void> login(String email, String password) async {
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      _user = UserModelLogin(
-        uid: userCredential.user!.uid,
-        email: userCredential.user!.email!,
-      );
-      notifyListeners();
-    } catch (e) {
-      print(e.toString());
-      throw e;
-    }
-  }
+      Future<void> login(String email, String password) async {
+        try {
+          UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+            email: email,
+            password: password,
+          );
+          _user = UserModelLogin(
+            uid: userCredential.user!.uid,
+            email: userCredential.user!.email!,
+          );
+          notifyListeners();
+        } catch (e) {
+          print(e.toString());
+          throw e;
+        }
+      }
+
+      Future<UserModel?> getUserInfo(String uid) async {
+        try {
+          DocumentSnapshot userDoc =
+              await _firestore.collection('users').doc(uid).get();
+          if (userDoc.exists) {
+            return UserModel.fromMap(userDoc.data() as Map<String, dynamic>);
+          } else {
+            return null;
+          }
+        } catch (e) {
+          print('Error getting user info: $e');
+          throw e;
+        }
+      }
 }

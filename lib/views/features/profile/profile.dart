@@ -7,13 +7,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final TextEditingController _nameController =
-      TextEditingController(text: 'Ummu Nada');
-  final TextEditingController _emailController =
-      TextEditingController(text: 'ummu2354@gmail.com');
-  final TextEditingController _phoneController =
-      TextEditingController(text: '+6285895045155');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,9 +59,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            _buildEditableProfileInfo('Nama', _nameController),
-            _buildEditableProfileInfo('Email', _emailController),
-            _buildEditableProfileInfo('Nomor Telepon', _phoneController),
+            Text('Nama'),
+            Text('Email'),
+            Text('Nomor Telepon'),
             const SizedBox(
               height: 50,
             ),
