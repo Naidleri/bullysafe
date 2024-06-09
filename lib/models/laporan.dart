@@ -7,7 +7,7 @@ class Laporan {
   final String? jenisKelaminKorban;
   final String? jenisKekerasan;
   final String? deskripsiKejadian;
-  final String? filePath;
+  String? filePath;
   final String? lokasiKejadian;
 
   Laporan({

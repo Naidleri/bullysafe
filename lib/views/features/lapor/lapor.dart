@@ -331,7 +331,14 @@ class _LaporState extends State<Lapor> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Lapor2(),
+                            builder: (context) => Lapor2(
+                              namaPelapor: namaPelaporController.text,
+                              hubungan: hubunganController.text,
+                              namaKorban: namaKorbanController.text,
+                              gender: selectedGender,
+                              violenceType: selectedViolenceType,
+                              educationLevel: selectedEducationLevel,
+                            ),
                           ),
                         );
                       },
