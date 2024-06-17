@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_bullysafe/models/forum.dart';
 import 'package:flutter_application_bullysafe/viewmodels/forum.dart';
+import 'package:flutter_application_bullysafe/views/features/forum/forum.dart';
 
 class AddForumScreen extends StatefulWidget {
   @override
@@ -70,9 +72,13 @@ class _AddForumScreenState extends State<AddForumScreen> {
               InkWell(
                 onTap: () async {
                   Forum forum = Forum(
-                      username: '', id: '', content: _contentController.text);
+                      username: '',
+                      id: '',
+                      content: _contentController.text,
+                      timestamp: Timestamp.now());
                   await _viewModel.addForum(forum);
                   _contentController.clear();
+                  _showSuccessDialog(context);
                 },
                 child: Container(
                   width: 122,
@@ -101,6 +107,29 @@ class _AddForumScreenState extends State<AddForumScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Unggah Berhasil"),
+          content: Text("Forum Anda berhasil diunggah."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ForumScreen()),
+                );
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

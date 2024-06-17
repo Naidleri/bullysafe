@@ -85,109 +85,186 @@ class _Lapor2State extends State<Lapor2> {
               ),
             ),
             SizedBox(height: 20),
-            Container(
-              width: size.width * 0.9,
-              padding: const EdgeInsets.all(24.0),
-              child: TextField(
-                controller: deskripsiController,
-                decoration: InputDecoration(
-                  labelText: 'Deskripsi Kejadian',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 5,
-              ),
-            ),
-            SizedBox(height: 20),
-            IconButton(
-              icon: Icon(Icons.upload_file),
-              onPressed: _pickFile,
-            ),
-            if (selectedFile != null)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('File yang dipilih: ${selectedFile!.path}'),
-              ),
-            Container(
-              width: size.width * 0.9,
-              padding: const EdgeInsets.all(24.0),
-              child: TextField(
-                controller: lokasiController,
-                decoration: InputDecoration(
-                  labelText: 'Lokasi Kejadian',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            InkWell(
-              onTap: () async {
-                Laporan laporan = Laporan(
-                  username: widget.namaPelapor,
-                  namaPelapor: widget.namaPelapor,
-                  hubungan: widget.hubungan,
-                  namaKorban: widget.namaKorban,
-                  educationLevel: widget.educationLevel,
-                  jenisKelaminKorban: widget.gender,
-                  jenisKekerasan: widget.violenceType,
-                  deskripsiKejadian: deskripsiController.text,
-                  lokasiKejadian: lokasiController.text,
-                );
-
-                await _laporViewModel.addLaporan(laporan, selectedFile);
-
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Row(
-                        children: [
-                          Icon(Icons.check_circle, color: Colors.green),
-                          SizedBox(width: 10),
-                          Text("Laporan Berhasil"),
-                        ],
-                      ),
-                      content: Text("Laporan Anda telah berhasil terkirim."),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text("Tutup"),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 15),
-                decoration: ShapeDecoration(
-                  color: const Color(0xFF4EACF0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  shadows: const [
-                    BoxShadow(
-                      color: Color(0x2B000000),
-                      blurRadius: 6,
-                      offset: Offset(0, 0),
-                      spreadRadius: 0,
-                    )
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    'Kirim',
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Deskripsi Kejadian',
                     style: TextStyle(
-                      color: Colors.white,
                       fontSize: 16,
+                      fontWeight: FontWeight.w400,
                       fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: deskripsiController,
+                    decoration: InputDecoration(
+                      hintText: 'Deskripsi...',
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      border: InputBorder.none,
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    ),
+                    maxLines: 5,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Upload Bukti',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Card(
+                    color: Colors.grey[200],
+                    child: InkWell(
+                      onTap: _pickFile,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.upload_file, color: Colors.blue),
+                            SizedBox(width: 10),
+                            Text(
+                              'Pilih File',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Poppins',
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (selectedFile != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        'File yang dipilih: ${selectedFile!.path}',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Lokasi Kejadian',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: lokasiController,
+                    decoration: InputDecoration(
+                      hintText: 'lokasi...',
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      border: InputBorder.none,
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Center(
+              child: InkWell(
+                onTap: () async {
+                  Laporan laporan = Laporan(
+                    username: widget.namaPelapor,
+                    namaPelapor: widget.namaPelapor,
+                    hubungan: widget.hubungan,
+                    namaKorban: widget.namaKorban,
+                    educationLevel: widget.educationLevel,
+                    jenisKelaminKorban: widget.gender,
+                    jenisKekerasan: widget.violenceType,
+                    deskripsiKejadian: deskripsiController.text,
+                    lokasiKejadian: lokasiController.text,
+                  );
+
+                  await _laporViewModel.addLaporan(laporan, selectedFile);
+
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Row(
+                          children: [
+                            Icon(Icons.check_circle, color: Colors.green),
+                            SizedBox(width: 10),
+                            Text("Laporan Berhasil"),
+                          ],
+                        ),
+                        content: Text("Laporan Anda telah berhasil terkirim."),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .popUntil((route) => route.isFirst);
+                            },
+                            child: Text("Tutup"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  width: size.width * 0.88,
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF4EACF0),
+                    borderRadius: BorderRadius.circular(4),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x2B000000),
+                        blurRadius: 6,
+                        offset: Offset(0, 0),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Kirim',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
+            SizedBox(height: 15),
           ],
         ),
       ),

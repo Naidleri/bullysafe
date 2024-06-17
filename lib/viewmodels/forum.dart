@@ -19,6 +19,7 @@ class AddForumViewModel {
         await forumCollection.add({
           'username': forum.username,
           'content': forum.content,
+          'timestamp': FieldValue.serverTimestamp(),
         });
       }
     }

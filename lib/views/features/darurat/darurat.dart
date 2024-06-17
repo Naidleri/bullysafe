@@ -1,74 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_application_bullysafe/viewmodels/emergency_view_model.dart';
 
-class DaruratScreen extends StatefulWidget {
-  @override
-  _DaruratScreenState createState() => _DaruratScreenState();
-}
-
-class _DaruratScreenState extends State<DaruratScreen> {
+class DaruratScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFFF6F6F6),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.15),
-                spreadRadius: 2,
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: AppBar(
-            title: const Text(
-              "Darurat",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Poppins',
-                fontSize: 20,
-              ),
+    return ChangeNotifierProvider(
+      create: (_) => EmergencyViewModel(),
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFF6F6F6),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.15),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            centerTitle: true,
-            backgroundColor: const Color(0xFFF6F6F6),
-            elevation: 0,
+            child: AppBar(
+              title: const Text(
+                "Darurat",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'Poppins',
+                  fontSize: 20,
+                ),
+              ),
+              centerTitle: true,
+              backgroundColor: const Color(0xFFF6F6F6),
+              elevation: 0,
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Nomor Darurat',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
+        body: Consumer<EmergencyViewModel>(
+          builder: (context, viewModel, child) {
+            if (viewModel.isLoading) {
+              return Center(child: CircularProgressIndicator());
+            }
+
+            return Padding(
+              padding: const EdgeInsets.all(25.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Nomor Darurat",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: viewModel.emergencyList.length,
+                    itemBuilder: (context, index) {
+                      final emergency = viewModel.emergencyList[index];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          EmergencyCard(
+                            title: emergency.title,
+                            address: emergency.address,
+                            phone: emergency.phone,
+                            icon: emergency.icon,
+                            backgroundColor: Color(0xFF4EACF0),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
+                      );
+                    },
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 15),
-            EmergencyCard(
-              title: 'Polisi',
-              address: 'Jalan Jawa VII',
-              phone: '9112',
-              icon: "assets/images/polisi.png",
-              backgroundColor: Color(0xFF4EACF0),
-            ),
-            const SizedBox(height: 20),
-            EmergencyCard(
-              title: 'Dinas Pempemberdayaan perempuan dan perlindungan anak',
-              address: 'Jalan Jawa VII',
-              phone: '(021) 3842638, 3805563',
-              icon: "assets/images/dinas.png",
-              backgroundColor: Color(0xFF4EACF0),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -93,9 +106,9 @@ class EmergencyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 15),
       decoration: ShapeDecoration(
-        color: const Color(0xFF4EACF0),
+        color: backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
@@ -111,7 +124,7 @@ class EmergencyCard extends StatelessWidget {
                   title,
                   style: const TextStyle(
                     color: Color(0xFF242823),
-                    fontSize: 16,
+                    fontSize: 15,
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w600,
                   ),
@@ -157,7 +170,7 @@ class EmergencyCard extends StatelessWidget {
               width: 70,
               height: 70,
             ),
-          )
+          ),
         ],
       ),
     );
