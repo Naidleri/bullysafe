@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_application_bullysafe/models/forum.dart';
 import 'package:flutter_application_bullysafe/viewmodels/forum.dart';
-import 'package:flutter_application_bullysafe/views/homepage.dart';
+// import 'package:flutter_application_bullysafe/views/homepage.dart';
+// import 'package:flutter_application_bullysafe/views/features/forum/addForum.dart';
 
 class ForumScreen extends StatefulWidget {
   @override
