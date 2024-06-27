@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_bullysafe/views/features/artikel/detailartikel.dart';
+import 'package:flutter_application_bullysafe/models/article.dart';
+import 'package:flutter_application_bullysafe/viewmodels/article_view_model.dart';
 
-class Artikel extends StatelessWidget {
+class Artikel extends StatefulWidget {
+  @override
+  _ArtikelState createState() => _ArtikelState();
+}
+
+class _ArtikelState extends State<Artikel> {
+  final ArticleViewModel viewModel = ArticleViewModel();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             decoration: BoxDecoration(
@@ -32,213 +43,70 @@ class Artikel extends StatelessWidget {
               elevation: 0,
             ),
           ),
-          // Artikel Cards
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              color: Color(0xFFF6F6F6),
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 19,
-                    top: 25,
-                    child: Container(
-                      width: 350,
-                      height: 45,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Color(0xFFEFEFEF),
-                          prefixIcon:
-                              Icon(Icons.search, color: Color(0xFF7C7C7C)),
-                          hintText: 'Cari Artikel...',
-                          hintStyle: TextStyle(
-                            color: Color(0xFF7C7C7C),
-                            fontSize: 14,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w400,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
-                    ),
+          SizedBox(height: 25),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: SizedBox(
+              height: 45,
+              child: TextField(
+                controller: _searchController,
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value.toLowerCase();
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Cari Artikel...',
+                  hintStyle: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
                   ),
-                  _buildArticleCard(
-                    context,
-                    title:
-                        'Cara mengetahui tanda-tanda anak yang terkena bullying',
-                    imageUrl: "assets/images/Discrimination.png",
-                    top: 95,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailArtikel(),
-                        ),
-                      );
-                    },
+                  prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  filled: true,
+                  fillColor: Color(0xFFEFEFEF),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
-                  _buildArticleCard(
-                    context,
-                    title:
-                        'Cara mengatasi bullying dan mencegah dampak buruknya',
-                    imageUrl: "assets/images/Bullying.png",
-                    top: 270,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailArtikel(),
-                        ),
-                      );
-                    },
-                  ),
-                  _buildArticleCard(
-                    context,
-                    title: 'Faktor penyebab dan bahayanya bullying',
-                    imageUrl: "assets/images/Stop bullying.png",
-                    top: 445,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetailArtikel(),
-                        ),
-                      );
-                    },
-                  ),
-                  Positioned(
-                    left: 0,
-                    top: 664,
-                    child: Container(
-                      width: 414,
-                      height: 60,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            left: 0,
-                            top: 0,
-                            child: Container(
-                              width: 414,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0x0F000000),
-                                    blurRadius: 20,
-                                    offset: Offset(0, -5),
-                                    spreadRadius: 5,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 300,
-                            top: 11,
-                            child: Container(
-                              width: 83,
-                              height: 53,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 0,
-                                    top: 0,
-                                    child: Container(
-                                      width: 83,
-                                      height: 53,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment(0.00, -1.00),
-                                          end: Alignment(0, 1),
-                                          colors: [
-                                            Colors.white,
-                                            Colors.white.withOpacity(0)
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 21,
-                            top: 2,
-                            child: Container(
-                              width: 108,
-                              height: 70,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 0,
-                                    top: 0,
-                                    child: Container(
-                                      width: 108,
-                                      height: 70,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment(0.00, -1.00),
-                                          end: Alignment(0, 1),
-                                          colors: [Colors.white.withOpacity(0)],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 36,
-                                    top: 15.56,
-                                    child: Container(
-                                      width: 36,
-                                      height: 38.89,
-                                      padding: const EdgeInsets.only(
-                                        top: 3.26,
-                                        left: 3,
-                                        right: 3,
-                                        bottom: 3.24,
-                                      ),
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 193,
-                    top: 678,
-                    child: Container(
-                      width: 37,
-                      height: 47,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage("assets/images/home_icon.png"),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                  contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                ),
               ),
+            ),
+          ),
+          Expanded(
+            child: StreamBuilder<List<Article>>(
+              stream: viewModel.getArticles(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No articles found.'));
+                }
+
+                List<Article> filteredArticles = snapshot.data!
+                    .where((article) =>
+                        article.title.toLowerCase().contains(_searchQuery))
+                    .toList();
+
+                if (filteredArticles.isEmpty) {
+                  return Center(
+                      child: Text('No results found for "$_searchQuery".'));
+                }
+
+                return ListView.builder(
+                  itemCount: filteredArticles.length,
+                  itemBuilder: (context, index) {
+                    final article = filteredArticles[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 0.0),
+                      child: _buildArticleCard(context, article),
+                    );
+                  },
+                );
+              },
             ),
           ),
         ],
@@ -246,89 +114,153 @@ class Artikel extends StatelessWidget {
     );
   }
 
-  Widget _buildArticleCard(BuildContext context,
-      {required String title,
-      required String imageUrl,
-      required double top,
-      required VoidCallback onTap}) {
-    return Positioned(
-      left: 20,
-      top: top,
-      child: InkWell(
-        onTap: onTap, //
-        child: Container(
-          width: 345,
-          height: 152,
-          clipBehavior: Clip.antiAlias,
-          decoration: ShapeDecoration(
-            color: Color(0xFF4EACF0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
+  Widget _buildArticleCard(BuildContext context, Article article) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailArtikelPage(article: article),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Row(
-              children: [
-                Flexible(
-                  flex: 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: TextStyle(
-                          color: Color(0xFF2A2A2A),
-                          fontSize: 14,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 10.0),
+        width: double.infinity,
+        height: 152,
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: Color(0xFF4EACF0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: [
+              Flexible(
+                flex: 2,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      article.title,
+                      style: TextStyle(
+                        color: Color(0xFF2A2A2A),
+                        fontSize: 14,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Container(
+                      width: 88,
+                      height: 30,
+                      decoration: ShapeDecoration(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(width: 1, color: Color(0xFFF6F1F1)),
+                          borderRadius: BorderRadius.circular(20),
                         ),
                       ),
-                      SizedBox(height: 25),
-                      Container(
-                        width: 88,
-                        height: 30,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            side:
-                                BorderSide(width: 1, color: Color(0xFFF6F1F1)),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'View More',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w600,
-                            ),
+                      child: Center(
+                        child: Text(
+                          'Read More',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 10),
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    width: 112,
-                    height: 112,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(imageUrl),
-                        fit: BoxFit.fill,
-                      ),
+              ),
+              SizedBox(width: 10),
+              Flexible(
+                flex: 1,
+                child: Container(
+                  width: 112,
+                  height: 112,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(article.imageUrl),
+                      fit: BoxFit.fill,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailArtikelPage extends StatelessWidget {
+  final Article article;
+
+  DetailArtikelPage({required this.article});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Artikel',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 400,
+              height: 185,
+              child: Image.asset(
+                article.foto_detail_articles,
+                fit: BoxFit.contain,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              article.title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xFF2A2A2A),
+                fontSize: 18,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                article.detail_article,
+                textAlign: TextAlign.justify,
+                style: TextStyle(
+                  color: Color(0xFF2A2A2A),
+                  fontSize: 14,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

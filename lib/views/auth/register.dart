@@ -335,7 +335,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             );
                           },
                           child: const Text(
-                            'Login',
+                            'Masuk',
                             style: TextStyle(
                               color: Color(0xFF4EACF0),
                               fontSize: 16,

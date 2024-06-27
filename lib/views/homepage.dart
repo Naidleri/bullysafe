@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_bullysafe/views/features/Mood%20Tracker/mood.dart';
+import 'package:flutter_application_bullysafe/views/features/Mood%20Tracker/tracker.dart';
 import 'package:flutter_application_bullysafe/views/features/lapor/lapor.dart';
 import 'package:flutter_application_bullysafe/views/features/notification/notifikasi.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_application_bullysafe/views/features/Mood Tracker/tracker.dart';
 import 'package:flutter_application_bullysafe/views/features/darurat/darurat.dart';
 import 'package:flutter_application_bullysafe/views/features/konseling/konseling.dart';
 import 'package:flutter_application_bullysafe/views/features/forum/forum.dart';
@@ -21,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const HomeScreen(),
     Artikel(),
+    ForumScreen(),
     ProfileScreen(),
   ];
 
@@ -43,12 +49,13 @@ class _HomePageState extends State<HomePage> {
         showUnselectedLabels: true,
         iconSize: 32,
         selectedItemColor: const Color(0xFF4EACF0),
-        selectedFontSize: 18,
+        selectedFontSize: 16,
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.article), label: 'Artikel'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat), label: 'Forum'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
     );
@@ -62,8 +69,19 @@ class HomeScreen extends StatelessWidget {
     'Lapor',
     'Darurat',
     'Konseling',
-    'Forum',
+    'Mood Tracker',
   ];
+
+  Stream<DocumentSnapshot> _getUserStream() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .snapshots();
+    }
+    throw Exception("User not logged in");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,13 +100,39 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
           child: AppBar(
-            title: const Text(
-              "Halo, Ummu!",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontFamily: 'Poppins',
-                fontSize: 20,
-              ),
+            title: StreamBuilder<DocumentSnapshot>(
+              stream: _getUserStream(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text(
+                    "Halo, ...",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins',
+                      fontSize: 20,
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text(
+                    "Halo, User!",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins',
+                      fontSize: 20,
+                    ),
+                  );
+                } else {
+                  String userName = snapshot.data?['name'] ?? 'User';
+                  return Text(
+                    "Halo, $userName!",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins',
+                      fontSize: 20,
+                    ),
+                  );
+                }
+              },
             ),
             centerTitle: true,
             backgroundColor: const Color(0xFFF6F6F6),
@@ -229,11 +273,11 @@ class HomeScreen extends StatelessWidget {
                               ),
                             );
                             break;
-                          case 'Forum':
+                          case 'Mood Tracker':
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ForumScreen(),
+                                builder: (context) => TrackerScreen(),
                               ),
                             );
                             break;
